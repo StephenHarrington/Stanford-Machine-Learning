@@ -1,112 +1,99 @@
 function J = computeCost(X, y, theta)
-%COMPUTECOST Compute cost for linear regression
-%   J = COMPUTECOST(X, y, theta) computes the cost of using theta as the
-%   parameter for linear regression to fit the data points in X and y
-
-% Initialize some useful values
-m = length(y); % number of training examples
-
-J = 0;
-J = sum((X*theta - y).^2)/(2*m);
+	%COMPUTECOST Compute cost for linear regression
+	%   J = COMPUTECOST(X, y, theta) computes the cost of using theta as the
+	%   parameter for linear regression to fit the data points in X and y
+	
+	% Initialize some useful values
+	m = length(y); % number of training examples
+	
+	J = 0;
+	J = sum((X*theta - y).^2)/(2*m);
 
 end
 
 
 function [theta, J_history] = gradientDescent(X, y, theta, alpha, num_iters)
-%GRADIENTDESCENT Performs gradient descent to learn theta
-%   theta = GRADIENTDESENT(X, y, theta, alpha, num_iters) updates theta by 
-%   taking num_iters gradient steps with learning rate alpha
-
-% Initialize some useful values
-m = length(y); % number of training examples
-J_history = zeros(num_iters, 1);
-
-for iter = 1:num_iters
-  grad = (1/m).*X'*((X*theta)-y);
-  theta = theta - alpha .* grad;
-  J_history(iter) = computeCost(X, y, theta);
-end
-
+	%   theta = GRADIENTDESENT(X, y, theta, alpha, num_iters) updates theta by 
+	%   taking num_iters gradient steps with learning rate alpha
+	
+	% Initialize some useful values
+	m = length(y); % number of training examples
+	J_history = zeros(num_iters, 1);
+	
+	for iter = 1:num_iters
+	  grad = (1/m).*X'*((X*theta)-y);
+	  theta = theta - alpha .* grad;
+	  J_history(iter) = computeCost(X, y, theta);
+	end
 end
 
 function J = computeCostMulti(X, y, theta)
-%COMPUTECOSTMULTI Compute cost for linear regression with multiple variables
-%   J = COMPUTECOSTMULTI(X, y, theta) computes the cost of using theta as the
-%   parameter for linear regression to fit the data points in X and y
-
-% Initialize some useful values
-m = length(y); % number of training examples
-
-J = 0;
-J = sum((X*theta - y).^2)/(2*m);
-
+	%   J = COMPUTECOSTMULTI(X, y, theta) computes the cost of using theta as the
+	%   parameter for linear regression to fit the data points in X and y
+	
+	% Initialize some useful values
+	m = length(y); % number of training examples
+	
+	J = 0;
+	J = sum((X*theta - y).^2)/(2*m);
 end
 
 
 function [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters)
-%GRADIENTDESCENTMULTI Performs gradient descent to learn theta
-%   theta = GRADIENTDESCENTMULTI(x, y, theta, alpha, num_iters) updates theta by
-%   taking num_iters gradient steps with learning rate alpha
-
-% Initialize some useful values
-m = length(y); % number of training examples
-J_history = zeros(num_iters, 1);
-
-for iter = 1:num_iters
-  grad = (1/m).*X'*((X*theta)-y);
-  theta = theta - alpha .* grad;
-  J_history(iter) = computeCostMulti(X, y, theta);
-end
-
+	%   theta = GRADIENTDESCENTMULTI(x, y, theta, alpha, num_iters) updates theta by
+	%   taking num_iters gradient steps with learning rate alpha
+	
+	% Initialize some useful values
+	m = length(y); % number of training examples
+	J_history = zeros(num_iters, 1);
+	
+	for iter = 1:num_iters
+	  grad = (1/m).*X'*((X*theta)-y);
+	  theta = theta - alpha .* grad;
+	  J_history(iter) = computeCostMulti(X, y, theta);
+	end
 end
 
 
 function [X_norm, mu, sigma] = featureNormalize(X)
-%FEATURENORMALIZE Normalizes the features in X 
-%   FEATURENORMALIZE(X) returns a normalized version of X where
-%   the mean value of each feature is 0 and the standard deviation
-%   is 1. This is often a good preprocessing step to do when
-%   working with learning algorithms.
+	%   FEATURENORMALIZE(X) returns a normalized version of X where
+	%   the mean value of each feature is 0 and the standard deviation
+	%   is 1. This is often a good preprocessing step to do when
+	%   working with learning algorithms.
 
-% You need to set these values correctly
-X_norm = X;
-mu = zeros(1, size(X, 2));
-sigma = zeros(1, size(X, 2));
-
-mu = mean(X)
-sigma = std(X)
-for dim = 1:size(X)(2)
-   X_norm(:,dim) = (X(:, dim) - mu(dim)) ./ sigma(dim);
+	X_norm = X;
+	mu = zeros(1, size(X, 2));
+	sigma = zeros(1, size(X, 2));
+	
+	mu = mean(X)
+	sigma = std(X)
+	for dim = 1:size(X)(2)
+	   X_norm(:,dim) = (X(:, dim) - mu(dim)) ./ sigma(dim);
+	end
 end
 
-
 function [theta] = normalEqn(X, y)
-%NORMALEQN Computes the closed-form solution to linear regression 
-%   NORMALEQN(X,y) computes the closed-form solution to linear 
-%   regression using the normal equations.
-
-theta = zeros(size(X, 2), 1);
-theta = inv(X'*X)*X'*y
-
+	%   NORMALEQN(X,y) computes the closed-form solution to linear 
+	%   regression using the normal equations.
+	
+	theta = zeros(size(X, 2), 1);
+	theta = inv(X'*X)*X'*y
 end
 
 
 function plotData(x, y)
-%PLOTDATA Plots the data points x and y into a new figure 
-%   PLOTDATA(x,y) plots the data points and gives the figure axes labels of
-%   population and profit.
-figure; % open a new figure window
-plot(x, y, 'rx', 'Markersize',10);
-ylabel('Profit in $10,000s');
-xlabel('Population of City in 10,000s');
-
+	%   PLOTDATA(x,y) plots the data points and gives the figure axes labels of
+	%   population and profit.
+	figure; % open a new figure window
+	plot(x, y, 'rx', 'Markersize',10);
+	ylabel('Profit in $10,000s');
+	xlabel('Population of City in 10,000s');
 end
 
 function A = warmUpExercise()
-%WARMUPEXERCISE Example function in octave
-%   A = WARMUPEXERCISE() is an example function that returns the 5x5 identity matrix
-  A = [];
-  A = eye(5);
+	%   A = WARMUPEXERCISE() is an example function that returns the 5x5 identity matrix
+	  A = [];
+	  A = eye(5);
 end
 
 
